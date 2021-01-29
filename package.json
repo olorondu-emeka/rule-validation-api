@@ -1,0 +1,57 @@
+{
+  "name": "rule-validation-api",
+  "version": "1.0.0",
+  "description": "a simple rule validation API",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha --timeout 20000 -r esm --exit",
+    "lint": "eslint '**/*.js'",
+    "lint:fix": "prettier-eslint '**/*.js' --write",
+    "start": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olorondu-emeka/rule-validation-api.git"
+  },
+  "keywords": [
+    "rule-validation"
+  ],
+  "author": "Olorondu Chukwuemeka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olorondu-emeka/rule-validation-api/issues"
+  },
+  "homepage": "https://github.com/olorondu-emeka/rule-validation-api#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "husky": "^4.3.7"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "esm": "^3.2.25",
+    "lint-staged": "^10.5.3",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.7",
+    "nyc": "^15.1.0",
+    "prettier-eslint-cli": "^5.0.0"
+  },
+  "lint-staged": {
+    "*.+(js|jsx)": [
+      "eslint --fix --ext .js ./src",
+      "git add"
+    ],
+    "*.+(json|css|md)": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git add . && lint-staged"
+    }
+  }
+}
