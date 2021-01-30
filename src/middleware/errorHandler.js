@@ -108,46 +108,13 @@ module.exports = class ErrorHandler {
             .status(400)
             .json(ErrorResponse.wrongFieldType('data', 'object'));
         }
-
-        // if (condition === 'contains') {
-        //   const dataObjectKeys = field.split('.');
-        //   let currentLevel = { ...data };
-        //   let value = null;
-
-        //   for (let i = 0; i < dataObjectKeys.length; i++) {
-        //     currentLevel = currentLevel[dataObjectKeys[i]];
-        //   }
-        //   value = currentLevel;
-        // }
       }
-
-      // if(rule.condition === 'contains'){
-      //   if (field.indexOf('.') !== -1 && type === 'object') {
-      //     const dataObjectKeys = field.split('.');
-      //     let currentLevel = { ...data };
-      //     for (let i = 0; i < dataObjectKeys.length; i++) {
-      //       currentLevel = currentLevel[dataObjectKeys[i]];
-      //     }
-      //     value = currentLevel;
-      //   } else {
-      //     value = data[field];
-      //   }
-      // }
 
       if (!allowedTypes.includes(type)) {
         return res
           .status(400)
           .json(ErrorResponse.wrongFieldType('data', 'array|string'));
       }
-
-      // if(condition === 'contains'){
-      //   let value = data[field];
-      //   if(!parseInt(value)){
-      //     if(typeof value !== typeof condition_value )
-      //   } else{
-      //     if(ty)
-      //   }
-      // }
 
       // passed validation
       next();

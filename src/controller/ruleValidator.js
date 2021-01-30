@@ -74,7 +74,7 @@ module.exports = class RuleValidator {
         test = value >= condition_value;
         break;
       case 'contains':
-        if (type === 'array') {
+        if (Array.isArray(value)) {
           test = value.includes(condition_value);
         } else {
           // valid substring
