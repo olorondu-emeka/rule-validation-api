@@ -102,10 +102,23 @@ module.exports = class ErrorHandler {
       const type = Array.isArray(data) ? 'array' : typeof data;
 
       // validate data
-      if (field.indexOf('.') !== -1 && type !== 'object') {
-        return res
-          .status(400)
-          .json(ErrorResponse.wrongFieldType('data', 'object'));
+      if (field.indexOf('.') !== -1) {
+        if (type !== 'object') {
+          return res
+            .status(400)
+            .json(ErrorResponse.wrongFieldType('data', 'object'));
+        }
+
+        // if (condition === 'contains') {
+        //   const dataObjectKeys = field.split('.');
+        //   let currentLevel = { ...data };
+        //   let value = null;
+
+        //   for (let i = 0; i < dataObjectKeys.length; i++) {
+        //     currentLevel = currentLevel[dataObjectKeys[i]];
+        //   }
+        //   value = currentLevel;
+        // }
       }
 
       // if(rule.condition === 'contains'){
@@ -126,6 +139,15 @@ module.exports = class ErrorHandler {
           .status(400)
           .json(ErrorResponse.wrongFieldType('data', 'array|string'));
       }
+
+      // if(condition === 'contains'){
+      //   let value = data[field];
+      //   if(!parseInt(value)){
+      //     if(typeof value !== typeof condition_value )
+      //   } else{
+      //     if(ty)
+      //   }
+      // }
 
       // passed validation
       next();
