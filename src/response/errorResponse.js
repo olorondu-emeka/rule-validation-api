@@ -59,4 +59,16 @@ module.exports = class ErrorResponse {
       ...commonFields
     };
   }
+
+  /**
+   * @static
+   * @param {string} message expected mssage
+   * @returns {object} a response object
+   */
+  static genericError(message) {
+    return {
+      message,
+      ...commonFields
+    };
+  }
 };
