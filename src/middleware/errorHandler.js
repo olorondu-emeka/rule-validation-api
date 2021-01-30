@@ -1,4 +1,4 @@
-const ErrorResponse = require('../response/errorResponse');
+const { ErrorResponse } = require('../response');
 
 /**
  * @class ErrorHandler
@@ -71,7 +71,7 @@ module.exports = class ErrorHandler {
           .status(400)
           .json(
             ErrorResponse.genericError(
-              'condition must be: gt, gte, eq, neq, contains'
+              'condition must be: gt|gte|eq|neq|contains'
             )
           );
       }
@@ -110,7 +110,7 @@ module.exports = class ErrorHandler {
       if (!allowedTypes.includes(type)) {
         return res
           .status(400)
-          .json(ErrorResponse.wrongFieldType('data', 'string|array|object'));
+          .json(ErrorResponse.wrongFieldType('data', 'array|object|string'));
       }
 
       // passed validation

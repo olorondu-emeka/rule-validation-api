@@ -1,21 +1,26 @@
-// const express = require('express');
-// const Controller = require('./controller');
+/* eslint-disable no-console */
 
-// const app = express();
+const express = require('express');
+const cors = require('cors');
+const RuleValidator = require('./controller/ruleValidator');
+const errorHandler = require('./middleware');
 
-// app.use(express.json());
+const app = express();
+
+app.use(express.json());
+app.use(cors());
 
 // app.post('/test1', Controller.printMessage);
-// app.post('/test2', Controller.printMessage);
+app.post('/validate-rule', ...errorHandler, RuleValidator.validateRule);
 
-// app.use('*', (request, response) => {
-//   response.status(404).send({ message: 'Not Found' });
-// });
+app.use('*', (request, response) => {
+  response.status(404).send({ message: 'Not Found' });
+});
 
-// const PORT = process.env.SUBSCRIBER_PORT || 9000;
+const PORT = process.env.PORT || 5000;
 
-// app.listen(PORT, () => {
-//   console.log(`Subscriber listening on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
 
-// module.exports = app;
+module.exports = app;
