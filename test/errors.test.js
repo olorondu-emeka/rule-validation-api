@@ -2,8 +2,11 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../src');
 const missingRequiredField = require('./__mocks__/errorObjects/missingRequiredField');
+const helperObjects = require('./__mocks__/errorObjects/helperObjects');
 
 const { expect } = chai;
+const { missingFromData1, missingFromData2, missingFromData3 } = helperObjects;
+
 const {
   missingRule,
   missingData,
@@ -72,4 +75,40 @@ describe('Error Tests', () => {
       );
     });
   }); // end missing required. fields describe block
+
+  //   describe('Wrong field type');
+
+  describe('Missing field from data', () => {
+    it('should return a 400 error for a missing field from data object', async () => {
+      const response1 = await chai
+        .request(server)
+        .post('/validate-rule')
+        .send(missingFromData1);
+      const response2 = await chai
+        .request(server)
+        .post('/validate-rule')
+        .send(missingFromData2);
+      const response3 = await chai
+        .request(server)
+        .post('/validate-rule')
+        .send(missingFromData3);
+
+      expect(response1).to.have.status(400);
+      expect(response2).to.have.status(400);
+      expect(response3).to.have.status(400);
+
+      expect(response1.body).to.have.property(
+        'message',
+        'field summary is missing from data.'
+      );
+      expect(response2.body).to.have.property(
+        'message',
+        'field battle is missing from data.'
+      );
+      expect(response3.body).to.have.property(
+        'message',
+        'field email is missing from data.'
+      );
+    });
+  });
 });

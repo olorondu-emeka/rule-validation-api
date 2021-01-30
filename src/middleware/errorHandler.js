@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 const { ErrorResponse } = require('../response');
 
 /**
@@ -133,14 +134,40 @@ module.exports = class ErrorHandler {
   static missingFieldFromData(req, res, next) {
     try {
       const { rule, data } = req.body;
-      if (!data[rule.field]) {
-        return res
-          .status(400)
-          .json(ErrorResponse.missingFieldFromData(`${rule.field}`));
-      }
 
-      // passed validation
-      next();
+      if (typeof data === 'object' && !Array.isArray(data)) {
+        const dataObjectKeys = rule.field.split('.');
+        // 2 levels of nesting max
+        if (dataObjectKeys.length > 3) {
+          return res
+            .status(400)
+            .json(
+              ErrorResponse.genericError('maximum level of nesting exceeded')
+            );
+        }
+
+        let currentLevel = { ...data };
+        for (let i = 0; i < dataObjectKeys.length; i++) {
+          currentLevel = currentLevel[dataObjectKeys[i]];
+          if (!currentLevel) {
+            return res
+              .status(400)
+              .json(ErrorResponse.missingFieldFromData(`${dataObjectKeys[i]}`));
+          }
+        }
+
+        // passed validation
+        next();
+      } else {
+        if (!data[rule.field]) {
+          return res
+            .status(400)
+            .json(ErrorResponse.missingFieldFromData(`${rule.field}`));
+        }
+
+        // passed validation
+        next();
+      }
     } catch (error) {
       return res
         .status(500)
