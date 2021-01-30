@@ -108,6 +108,19 @@ module.exports = class ErrorHandler {
           .json(ErrorResponse.wrongFieldType('data', 'object'));
       }
 
+      // if(rule.condition === 'contains'){
+      //   if (field.indexOf('.') !== -1 && type === 'object') {
+      //     const dataObjectKeys = field.split('.');
+      //     let currentLevel = { ...data };
+      //     for (let i = 0; i < dataObjectKeys.length; i++) {
+      //       currentLevel = currentLevel[dataObjectKeys[i]];
+      //     }
+      //     value = currentLevel;
+      //   } else {
+      //     value = data[field];
+      //   }
+      // }
+
       if (!allowedTypes.includes(type)) {
         return res
           .status(400)

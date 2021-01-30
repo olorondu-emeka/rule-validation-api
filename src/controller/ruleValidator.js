@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
-const { ErrorResponse } = require('../response');
+const { ErrorResponse, ValidationResponse } = require('../response');
+const validSubstring = require('../helper/validSubstring');
 
 module.exports = class RuleValidator {
   /**
@@ -77,14 +78,32 @@ module.exports = class RuleValidator {
           test = value.includes(condition_value);
         } else {
           // valid substring
-          test = 4;
+          test = validSubstring(value, condition_value);
         }
         break;
       default:
         test = false;
         break;
       } // end switch statement
-      return test;
+
+      const validationData = {
+        field,
+        field_value: value,
+        condition,
+        condition_value
+      };
+
+      if (test) {
+        return res
+          .status(200)
+          .json(
+            ValidationResponse.getResponseObject('success', validationData)
+          );
+      }
+
+      return res
+        .status(400)
+        .json(ValidationResponse.getResponseObject('error', validationData));
     } catch (error) {
       return res
         .status(500)
