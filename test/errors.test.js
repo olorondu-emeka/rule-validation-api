@@ -5,7 +5,13 @@ const missingRequiredField = require('./__mocks__/errorObjects/missingRequiredFi
 const helperObjects = require('./__mocks__/errorObjects/helperObjects');
 
 const { expect } = chai;
-const { missingFromData1, missingFromData2, missingFromData3 } = helperObjects;
+const {
+  missingFromData1,
+  missingFromData2,
+  missingFromData3,
+  wrongFieldTypeObject,
+  wrongFieldTypeOthers
+} = helperObjects;
 
 const {
   missingRule,
@@ -76,7 +82,33 @@ describe('Error Tests', () => {
     });
   }); // end missing required. fields describe block
 
-  //   describe('Wrong field type');
+  describe('Wrong field type', () => {
+    it('should return a 400 error for a wrong field type (object)', async () => {
+      const response = await chai
+        .request(server)
+        .post('/validate-rule')
+        .send(wrongFieldTypeObject);
+
+      expect(response).to.have.status(400);
+      expect(response.body).to.have.property(
+        'message',
+        'data should be an object.'
+      );
+    });
+
+    it('should return a 400 error for a wrong field type (others)', async () => {
+      const response = await chai
+        .request(server)
+        .post('/validate-rule')
+        .send(wrongFieldTypeOthers);
+
+      expect(response).to.have.status(400);
+      expect(response.body).to.have.property(
+        'message',
+        'data should be an array|string.'
+      );
+    });
+  }); // end wrong field type describe block
 
   describe('Missing field from data', () => {
     it('should return a 400 error for a missing field from data object', async () => {

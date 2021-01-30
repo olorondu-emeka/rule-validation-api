@@ -56,18 +56,28 @@ const missingFromData3 = {
   }
 };
 
-const wrongFieldTypeOthers = {
+const wrongFieldTypeObject = {
   rule: {
-    field: 'age',
+    field: 'address.state',
     condition: 'gte',
     condition_value: 30
   },
   data: ['one', 'two']
 };
 
+const wrongFieldTypeOthers = {
+  rule: {
+    field: 'age',
+    condition: 'gte',
+    condition_value: 30
+  },
+  data: 12
+};
+
 module.exports = {
   missingFromData1,
   missingFromData2,
   missingFromData3,
+  wrongFieldTypeObject,
   wrongFieldTypeOthers
 };

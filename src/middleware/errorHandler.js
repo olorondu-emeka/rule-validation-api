@@ -111,7 +111,7 @@ module.exports = class ErrorHandler {
       if (!allowedTypes.includes(type)) {
         return res
           .status(400)
-          .json(ErrorResponse.wrongFieldType('data', 'array|object|string'));
+          .json(ErrorResponse.wrongFieldType('data', 'array|string'));
       }
 
       // passed validation
