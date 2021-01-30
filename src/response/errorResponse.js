@@ -62,11 +62,12 @@ module.exports = class ErrorResponse {
 
   /**
    * @static
+   * @param {string} message expected mssage
    * @returns {object} a response object
    */
-  static internalServerError() {
+  static genericError(message) {
     return {
-      message: 'internal server error.',
+      message,
       ...commonFields
     };
   }

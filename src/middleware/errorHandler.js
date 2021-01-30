@@ -31,7 +31,8 @@ module.exports = class ErrorHandler {
    */
   static missingRequiredField(req, res, next) {
     try {
-      // 1. check for rule field
+      //   const allowedConditions = 2;
+      // 1. check for rul    e field
       if (!req.body.rule) {
         return res.status(400).json(ErrorResponse.missingRequiredField('rule'));
       }
@@ -64,28 +65,44 @@ module.exports = class ErrorHandler {
           .json(ErrorResponse.missingRequiredField('condition_value'));
       }
 
+      //   if (rule.cond)
       // validation has passed
       next();
     } catch (error) {
-      return res.status(500).json(ErrorResponse.internalServerError());
+      return res
+        .status(500)
+        .json(ErrorResponse.genericError('internal server error'));
     }
   }
 
-  // /**
-  //    * @static
-  //    * @memberof ErrorHandler
-  //    * @param {object} req express request object
-  //    * @param {object} res express response object
-  //    * @param {function} next express next function
-  //    * @returns {object} a response
-  //    */
-  //   static wrongFieldType(req, res, next) {
-  //     try {
-  //       const { data } = req.body;
+  /**
+   * @static
+   * @memberof ErrorHandler
+   * @param {object} req express request object
+   * @param {object} res express response object
+   * @param {function} next express next function
+   * @returns {object} a response
+   */
+  static wrongFieldType(req, res) {
+    try {
+      const { rule, data } = req.body;
+      //   const allowedTypes = ['string', 'object', 'array'];
+      const type = Array.isArray(data) ? 'array' : typeof data;
 
-  //       // 1. validate data
-  //     } catch (error) {
-  //       return res.status(500).json(ErrorResponse.internalServerError());
-  //     }
-  //   }
+      const { field } = rule;
+      // validate data
+      if (field.indexOf('.') !== -1 && type !== 'object') {
+        return res
+          .status(400)
+          .json(ErrorResponse.wrongFieldType('data', 'object'));
+      }
+
+      //   if (field.condition === 'contains') {
+      //   }
+    } catch (error) {
+      return res
+        .status(500)
+        .json(ErrorResponse.genericError('internal server error'));
+    }
+  }
 };
