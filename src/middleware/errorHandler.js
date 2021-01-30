@@ -31,8 +31,9 @@ module.exports = class ErrorHandler {
    */
   static missingRequiredField(req, res, next) {
     try {
-      //   const allowedConditions = 2;
-      // 1. check for rul    e field
+      const allowedConditions = ['gt', 'gte', 'eq', 'neq', 'contains'];
+
+      // 1. check for rule field
       if (!req.body.rule) {
         return res.status(400).json(ErrorResponse.missingRequiredField('rule'));
       }
@@ -65,7 +66,16 @@ module.exports = class ErrorHandler {
           .json(ErrorResponse.missingRequiredField('condition_value'));
       }
 
-      //   if (rule.cond)
+      if (!allowedConditions.includes(rule.condition)) {
+        return res
+          .status(400)
+          .json(
+            ErrorResponse.genericError(
+              'condition must be: gt, gte, eq, neq, contains'
+            )
+          );
+      }
+
       // validation has passed
       next();
     } catch (error) {
@@ -83,13 +93,13 @@ module.exports = class ErrorHandler {
    * @param {function} next express next function
    * @returns {object} a response
    */
-  static wrongFieldType(req, res) {
+  static wrongFieldType(req, res, next) {
     try {
       const { rule, data } = req.body;
-      //   const allowedTypes = ['string', 'object', 'array'];
+      const { field } = rule;
+      const allowedTypes = ['string', 'object', 'array'];
       const type = Array.isArray(data) ? 'array' : typeof data;
 
-      const { field } = rule;
       // validate data
       if (field.indexOf('.') !== -1 && type !== 'object') {
         return res
@@ -97,8 +107,14 @@ module.exports = class ErrorHandler {
           .json(ErrorResponse.wrongFieldType('data', 'object'));
       }
 
-      //   if (field.condition === 'contains') {
-      //   }
+      if (!allowedTypes.includes(type)) {
+        return res
+          .status(400)
+          .json(ErrorResponse.wrongFieldType('data', 'string|array|object'));
+      }
+
+      // passed validation
+      next();
     } catch (error) {
       return res
         .status(500)
