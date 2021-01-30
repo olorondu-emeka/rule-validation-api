@@ -121,4 +121,30 @@ module.exports = class ErrorHandler {
         .json(ErrorResponse.genericError('internal server error'));
     }
   }
+
+  /**
+   * @static
+   * @memberof ErrorHandler
+   * @param {object} req express request object
+   * @param {object} res express response object
+   * @param {function} next express next function
+   * @returns {object} a response
+   */
+  static missingFieldFromData(req, res, next) {
+    try {
+      const { rule, data } = req.body;
+      if (!data[rule.field]) {
+        return res
+          .status(400)
+          .json(ErrorResponse.missingFieldFromData(`${rule.field}`));
+      }
+
+      // passed validation
+      next();
+    } catch (error) {
+      return res
+        .status(500)
+        .json(ErrorResponse.genericError('internal server error'));
+    }
+  }
 };
