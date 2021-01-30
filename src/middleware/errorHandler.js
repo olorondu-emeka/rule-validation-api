@@ -72,7 +72,7 @@ module.exports = class ErrorHandler {
           .status(400)
           .json(
             ErrorResponse.genericError(
-              'condition must be: gt|gte|eq|neq|contains'
+              'condition must be: gt|gte|eq|neq|contains.'
             )
           );
       }
@@ -102,10 +102,12 @@ module.exports = class ErrorHandler {
       const type = Array.isArray(data) ? 'array' : typeof data;
 
       // validate data
-      if (field.indexOf('.') !== -1 && type !== 'object') {
-        return res
-          .status(400)
-          .json(ErrorResponse.wrongFieldType('data', 'object'));
+      if (field.indexOf('.') !== -1) {
+        if (type !== 'object') {
+          return res
+            .status(400)
+            .json(ErrorResponse.wrongFieldType('data', 'object'));
+        }
       }
 
       if (!allowedTypes.includes(type)) {

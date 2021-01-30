@@ -31,7 +31,7 @@ describe('Error Tests', () => {
       const response = await chai
         .request(server)
         .post('/validate-rule')
-        .send({ missingRule });
+        .send(missingRule);
 
       expect(response).to.have.status(400);
       expect(response.body).to.have.property('message', 'rule is required.');

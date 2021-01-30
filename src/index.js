@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// app.post('/test1', Controller.printMessage);
+app.get('/', RuleValidator.getDetails);
 app.post('/validate-rule', ...errorHandler, RuleValidator.validateRule);
 
 app.use('*', (request, response) => {
