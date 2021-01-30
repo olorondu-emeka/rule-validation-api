@@ -9,6 +9,8 @@ const {
   missingFromData1,
   missingFromData2,
   missingFromData3,
+  missingFromData4,
+  missingFromData5,
   wrongFieldTypeObject,
   wrongFieldTypeOthers
 } = helperObjects;
@@ -124,10 +126,20 @@ describe('Error Tests', () => {
         .request(server)
         .post('/validate-rule')
         .send(missingFromData3);
+      const response4 = await chai
+        .request(server)
+        .post('/validate-rule')
+        .send(missingFromData4);
+      const response5 = await chai
+        .request(server)
+        .post('/validate-rule')
+        .send(missingFromData5);
 
       expect(response1).to.have.status(400);
       expect(response2).to.have.status(400);
       expect(response3).to.have.status(400);
+      expect(response4).to.have.status(400);
+      expect(response5).to.have.status(400);
 
       expect(response1.body).to.have.property(
         'message',
@@ -140,6 +152,14 @@ describe('Error Tests', () => {
       expect(response3.body).to.have.property(
         'message',
         'field email is missing from data.'
+      );
+      expect(response4.body).to.have.property(
+        'message',
+        'field 5 is missing from data.'
+      );
+      expect(response5.body).to.have.property(
+        'message',
+        'field 7 is missing from data.'
       );
     });
   });
