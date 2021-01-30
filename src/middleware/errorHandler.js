@@ -72,7 +72,7 @@ module.exports = class ErrorHandler {
           .status(400)
           .json(
             ErrorResponse.genericError(
-              'condition must be: gt|gte|eq|neq|contains'
+              'condition must be: gt|gte|eq|neq|contains.'
             )
           );
       }
