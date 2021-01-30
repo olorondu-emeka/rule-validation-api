@@ -59,4 +59,15 @@ module.exports = class ErrorResponse {
       ...commonFields
     };
   }
+
+  /**
+   * @static
+   * @returns {object} a response object
+   */
+  static internalServerError() {
+    return {
+      message: 'internal server error.',
+      ...commonFields
+    };
+  }
 };
